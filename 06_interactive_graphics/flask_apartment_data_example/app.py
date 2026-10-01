@@ -13,7 +13,7 @@ app = Flask(__name__)
 @app.route('/')
 def index():
     # Load the CSV file (update the path if needed)
-    df = pd.read_csv('../apartments_data_enriched_cleaned.csv')
+    df = pd.read_csv('../../../data/apartments_data_enriched_cleaned.csv')
 
     # Calculate KPIs and round them
     mean_price = round(df['price'].mean(), 2)
