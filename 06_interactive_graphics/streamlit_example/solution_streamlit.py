@@ -3,18 +3,23 @@ Solution: Streamlit — Swiss EV Charging Stations
 =================================================
 Run with:
     streamlit run solution_streamlit.py
+
+Local:      http://127.0.0.1:8501
+Codespaces: https://<your-codespace-name>-8501.app.github.dev
+            (Streamlit binds to 0.0.0.0 automatically — no extra flags needed)
 """
 
-import streamlit as st
-import pandas as pd
 import matplotlib.pyplot as plt
+import pandas as pd
 import seaborn as sns
+import streamlit as st
 
 sns.set_theme(style='whitegrid')
 
 # ── Data ──────────────────────────────────────────────────────────────────────
 @st.cache_data
 def load_data():
+    """Load and cache the EV charging stations dataset."""
     return pd.read_csv('../../data/ev_charging_stations.csv')
 
 df = load_data()
@@ -46,7 +51,8 @@ st.dataframe(df_f.head(5))
 st.subheader('Distribution of Charging Power (kW)')
 fig, ax = plt.subplots(figsize=(8, 4))
 for pt in selected_types:
-    ax.hist(df_f[df_f['power_type'] == pt]['power_kw'], bins=bins, alpha=0.6, label=pt, edgecolor='white')
+    ax.hist(df_f[df_f['power_type'] == pt]['power_kw'],
+            bins=bins, alpha=0.6, label=pt, edgecolor='white')
 ax.set_xlabel('Power (kW)')
 ax.set_ylabel('Count')
 ax.legend()

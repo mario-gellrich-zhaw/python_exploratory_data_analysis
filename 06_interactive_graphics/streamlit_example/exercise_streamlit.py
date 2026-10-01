@@ -6,6 +6,10 @@ Build an interactive EDA web app for the EV charging stations dataset.
 Run with:
     streamlit run exercise_streamlit.py
 
+Local:      http://127.0.0.1:8501
+Codespaces: https://<your-codespace-name>-8501.app.github.dev
+            (Streamlit binds to 0.0.0.0 automatically — no extra flags needed)
+
 Tasks
 -----
 1. Load the dataset and display its shape and a preview (st.dataframe).
@@ -17,10 +21,11 @@ Tasks
 7. Show summary statistics (st.dataframe) for the filtered dataset.
 """
 
-import streamlit as st
-import pandas as pd
+# pylint: disable=unused-import
 import matplotlib.pyplot as plt
+import pandas as pd
 import seaborn as sns
+import streamlit as st
 
 sns.set_theme(style='whitegrid')
 

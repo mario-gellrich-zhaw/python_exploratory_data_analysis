@@ -3,21 +3,24 @@ Solution: Flask — Swiss EV Charging Stations
 ============================================
 Run with:
     python solution_flask.py
-Then open http://127.0.0.1:5000 in your browser.
+
+Local:      http://127.0.0.1:5000
+Codespaces: https://<your-codespace-name>-5000.app.github.dev
+            (Flask binds to 0.0.0.0 by default via app.run(host='0.0.0.0'))
 """
 
-import io
 import base64
-import matplotlib
-matplotlib.use('Agg')
+import io
+
 import matplotlib.pyplot as plt
 import pandas as pd
-from flask import Flask, render_template_string, request, jsonify
+from flask import Flask, jsonify, render_template_string, request
+
+plt.switch_backend('Agg')  # non-interactive backend for server-side rendering
 
 app = Flask(__name__)
 
-# Task 1: load dataset
-df = pd.read_csv('../../../data/ev_charging_stations.csv')
+df = pd.read_csv('../../data/ev_charging_stations.csv')
 NUM_COLS = ['power_kw', 'amperage', 'voltage']
 
 HTML_TEMPLATE = """
@@ -62,19 +65,18 @@ def make_histogram(variable: str, bins: int) -> str:
 
 @app.route('/')
 def index():
-    # Task 2 + 4: read query params, render histogram
+    """Render histogram page with variable selector and bin slider."""
     variable = request.args.get('variable', 'power_kw')
     if variable not in NUM_COLS:
         variable = 'power_kw'
-    bins = int(request.args.get('bins', 30))
-    bins = max(5, min(80, bins))
+    bins = max(5, min(80, int(request.args.get('bins', 30))))
     image = make_histogram(variable, bins)
     return render_template_string(HTML_TEMPLATE, variable=variable, bins=bins, image=image)
 
 
 @app.route('/summary')
 def summary():
-    # Task 3: return JSON summary statistics
+    """Return JSON summary statistics for all numeric columns."""
     stats = df[NUM_COLS].agg(['mean', 'median', 'std', 'min', 'max']).round(2)
     return jsonify(stats.to_dict())
 

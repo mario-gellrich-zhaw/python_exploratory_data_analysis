@@ -3,23 +3,25 @@ FastAPI example: serve a histogram as a PNG image.
 
 Usage:
     pip install fastapi uvicorn matplotlib pandas
-    uvicorn main:app --reload
+    uvicorn concept_fastapi:app --reload --host 0.0.0.0 --port 8000
 
-Then open http://127.0.0.1:8000/docs for the Swagger UI.
+Local:      http://127.0.0.1:8000/docs
+Codespaces: https://<your-codespace-name>-8000.app.github.dev/docs
+            (use --host 0.0.0.0 so Codespaces port forwarding can reach the server)
 """
 
 import io
 from typing import Literal
 
-import matplotlib
-matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import pandas as pd
 from fastapi import FastAPI, Query
 from fastapi.responses import Response
 
+plt.switch_backend("Agg")  # non-interactive backend for server-side rendering
+
 # Load apartment data
-df = pd.read_csv("../../../data/apartments_data_enriched_cleaned.csv", sep=";", encoding="utf-8")
+df = pd.read_csv("../../data/apartments_data_enriched_cleaned.csv")
 
 app = FastAPI(title="Apartment Data EDA API")
 
@@ -33,7 +35,9 @@ NUMERIC_COLS = ["price", "area", "rooms"]
     summary="Return a histogram for a selected variable",
 )
 def histogram(
-    variable: Literal["price", "area", "rooms"] = Query(default="price", description="Variable to plot"),
+    variable: Literal["price", "area", "rooms"] = Query(
+        default="price", description="Variable to plot"
+    ),
     bins: int = Query(default=40, ge=5, le=150, description="Number of histogram bins"),
 ):
     """Return a PNG histogram for the selected apartment variable."""
@@ -43,7 +47,6 @@ def histogram(
     ax.set_ylabel("Frequency")
     ax.set_title(f"Distribution of {variable.capitalize()}")
     fig.tight_layout()
-
     buf = io.BytesIO()
     fig.savefig(buf, format="png", dpi=100)
     plt.close(fig)

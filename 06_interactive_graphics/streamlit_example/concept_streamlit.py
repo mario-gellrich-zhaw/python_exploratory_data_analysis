@@ -3,7 +3,11 @@ Streamlit EDA app for apartment data.
 
 Usage:
     pip install streamlit matplotlib seaborn pandas
-    streamlit run app.py
+    streamlit run concept_streamlit.py
+
+Local:      http://127.0.0.1:8501
+Codespaces: https://<your-codespace-name>-8501.app.github.dev
+            (Streamlit binds to 0.0.0.0 automatically — no extra flags needed)
 """
 
 import matplotlib.pyplot as plt
@@ -12,9 +16,7 @@ import seaborn as sns
 import streamlit as st
 
 # ── Data ──────────────────────────────────────────────────────────────────────
-df = pd.read_csv(
-    "../../../data/apartments_data_enriched_cleaned.csv", sep=";", encoding="utf-8"
-)
+df = pd.read_csv("../../data/apartments_data_enriched_cleaned.csv")
 NUM_COLS = ["price", "area", "rooms"]
 
 # ── Sidebar ───────────────────────────────────────────────────────────────────

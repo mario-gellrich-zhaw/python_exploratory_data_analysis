@@ -5,11 +5,14 @@ Build a Flask web app that serves interactive EDA charts for the EV charging sta
 
 Run with:
     python exercise_flask.py
-Then open http://127.0.0.1:5000 in your browser.
+
+Local:      http://127.0.0.1:5000
+Codespaces: https://<your-codespace-name>-5000.app.github.dev
+            (Flask binds to 0.0.0.0 by default via app.run(host='0.0.0.0'))
 
 Tasks
 -----
-1. Load the EV charging stations dataset (../../../data/ev_charging_stations.csv).
+1. Load the EV charging stations dataset (../../data/ev_charging_stations.csv).
 2. Create a route GET / that renders an HTML page showing:
    - A dropdown to select a numerical variable (power_kw, amperage, voltage).
    - A histogram of the selected variable, served as a base64-encoded PNG image.
@@ -25,13 +28,15 @@ Hints
 - Use flask.jsonify() to return JSON responses.
 """
 
-import io
+# pylint: disable=unused-import
 import base64
-import matplotlib
-matplotlib.use('Agg')
+import io
+
 import matplotlib.pyplot as plt
 import pandas as pd
-from flask import Flask, render_template_string, request, jsonify
+from flask import Flask, jsonify, render_template_string, request
+
+plt.switch_backend('Agg')  # non-interactive backend for server-side rendering
 
 app = Flask(__name__)
 
@@ -65,14 +70,14 @@ HTML_TEMPLATE = """
 
 @app.route('/')
 def index():
+    """Render histogram page with variable selector and bin slider."""
     # Task 2 + 4: YOUR CODE HERE
-    pass
 
 
 @app.route('/summary')
 def summary():
+    """Return JSON summary statistics for all numeric columns."""
     # Task 3: YOUR CODE HERE
-    pass
 
 
 if __name__ == '__main__':
