@@ -22,5 +22,4 @@ streamlit==1.64.0
 folium==0.20.0
 
 # Automated EDA
-fg-data-profiling==4.20.0
 sweetviz==2.3.3

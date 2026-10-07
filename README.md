@@ -40,7 +40,7 @@ data/                               # Central data folder
 └── exploring_spatial_data.ipynb    # Leaflet/Folium: interactive maps
 
 07_automated_eda/
-└── automated_eda.ipynb             # Data profiling (fg-data-profiling, sweetviz),
+└── automated_eda.ipynb             # Data profiling (sweetviz),
                                     # AI-assisted EDA opportunities and pitfalls
 ```
 
