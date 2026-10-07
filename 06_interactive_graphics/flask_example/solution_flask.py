@@ -69,7 +69,7 @@ def index():
     variable = request.args.get('variable', 'power_kw')
     if variable not in NUM_COLS:
         variable = 'power_kw'
-    bins = max(5, min(80, int(request.args.get('bins', 30))))
+    bins = max(5, min(80, request.args.get('bins', default=30, type=int)))
     image = make_histogram(variable, bins)
     return render_template_string(HTML_TEMPLATE, variable=variable, bins=bins, image=image)
 

@@ -38,7 +38,7 @@ bins = st.sidebar.slider('Histogram bins', min_value=5, max_value=80, value=30, 
 top_n = st.sidebar.slider('Top N cities', min_value=5, max_value=20, value=10)
 
 # ── Filter ────────────────────────────────────────────────────────────────────
-df_f = df[df['power_type'].isin(selected_types)] if selected_types else df
+df_f = df[df['power_type'].isin(selected_types)]
 
 # ── Main ──────────────────────────────────────────────────────────────────────
 st.title('Swiss EV Charging Stations — Interactive EDA')
@@ -55,7 +55,8 @@ for pt in selected_types:
             bins=bins, alpha=0.6, label=pt, edgecolor='white')
 ax.set_xlabel('Power (kW)')
 ax.set_ylabel('Count')
-ax.legend()
+if selected_types:
+    ax.legend()
 st.pyplot(fig)
 plt.close(fig)
 
